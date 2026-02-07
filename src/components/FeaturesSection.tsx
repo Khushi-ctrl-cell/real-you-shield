@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const features = [
@@ -6,24 +7,28 @@ const features = [
     number: "01",
     title: "Voice & Call Analysis",
     description: "Detects AI-generated voices, unnatural pitch patterns, and synthetic speech markers in real-time.",
+    slug: "voice-analysis",
   },
   {
     icon: MessageSquare,
     number: "02",
     title: "Message Verification",
     description: "Analyzes linguistic patterns to detect AI-written text, flagging impersonation attempts.",
+    slug: "message-verification",
   },
   {
     icon: Video,
     number: "03",
     title: "Video & Media Integrity",
     description: "Detects deepfakes, face swaps, and AI-generated imagery with frame-by-frame analysis.",
+    slug: "video-integrity",
   },
   {
     icon: Brain,
     number: "04",
     title: "Contextual Reality Check",
     description: "Cross-checks behavior against known human patterns using device sensors.",
+    slug: "contextual-check",
   },
 ];
 
@@ -62,10 +67,11 @@ const FeaturesSection = () => {
 
         {/* Main Features Grid */}
         <div className="grid md:grid-cols-2 gap-px bg-border mb-24">
-          {features.map((feature, index) => (
-            <div
+          {features.map((feature) => (
+            <Link
               key={feature.title}
-              className="group bg-background p-8 md:p-10 hover:bg-card transition-colors relative"
+              to={`/features/${feature.slug}`}
+              className="group bg-background p-8 md:p-10 hover:bg-card transition-colors relative cursor-pointer"
             >
               {/* Number */}
               <span className="absolute top-8 right-8 font-display text-6xl font-bold text-foreground/5">
@@ -82,9 +88,12 @@ const FeaturesSection = () => {
                 <p className="text-muted-foreground font-mono text-sm leading-relaxed">{feature.description}</p>
                 
                 {/* Arrow on hover */}
-                <ArrowUpRight className="w-5 h-5 text-primary mt-6 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="flex items-center gap-2 mt-6 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-xs font-mono uppercase tracking-wider">Learn More</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

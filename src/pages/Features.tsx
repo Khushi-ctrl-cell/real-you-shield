@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck, Fingerprint, Eye, Ear, FileSearch, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +10,7 @@ const detailedFeatures = [
     number: "01",
     title: "Voice & Call Analysis",
     description: "Advanced voice verification that runs entirely on your device",
+    slug: "voice-analysis",
     capabilities: [
       "Detects AI-generated or cloned voices",
       "Identifies unnatural pitch stability and breath patterns",
@@ -21,6 +23,7 @@ const detailedFeatures = [
     number: "02",
     title: "Message Verification",
     description: "Distinguish between human and AI-written content instantly",
+    slug: "message-verification",
     capabilities: [
       "Detects AI-written text vs human typing patterns",
       "Analyzes linguistic entropy and repetition",
@@ -33,6 +36,7 @@ const detailedFeatures = [
     number: "03",
     title: "Video & Media Integrity",
     description: "Comprehensive deepfake and manipulation detection",
+    slug: "video-integrity",
     capabilities: [
       "Detects deepfakes, face swaps, and lip-sync manipulation",
       "Analyzes frame inconsistencies and artifacts",
@@ -45,6 +49,7 @@ const detailedFeatures = [
     number: "04",
     title: "Contextual Reality Check",
     description: "Multi-signal analysis for complete verification",
+    slug: "contextual-check",
     capabilities: [
       "Cross-checks interaction behavior against known human patterns",
       "Uses device sensors (time, motion, interaction flow)",
@@ -104,36 +109,42 @@ const Features = () => {
       <section className="py-20 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="space-y-px bg-border">
-            {detailedFeatures.map((feature, index) => (
-              <div
+            {detailedFeatures.map((feature) => (
+              <Link
                 key={feature.title}
-                className="grid md:grid-cols-2 gap-px bg-border"
+                to={`/features/${feature.slug}`}
+                className="grid md:grid-cols-2 gap-px bg-border group cursor-pointer"
               >
-                <div className="bg-background p-8 md:p-12 relative">
+                <div className="bg-background p-8 md:p-12 relative group-hover:bg-card transition-colors">
                   <span className="absolute top-8 right-8 font-display text-8xl font-bold text-foreground/[0.03]">
                     {feature.number}
                   </span>
                   
                   <div className="relative">
-                    <div className="w-14 h-14 border-2 border-primary flex items-center justify-center mb-6">
-                      <feature.icon className="w-6 h-6 text-primary" />
+                    <div className="w-14 h-14 border-2 border-primary flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                      <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
                     </div>
                     <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">{feature.title}</h3>
                     <p className="text-muted-foreground font-mono">{feature.description}</p>
+                    
+                    <div className="flex items-center gap-2 mt-6 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs font-mono uppercase tracking-wider">View Details</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </div>
                   </div>
                 </div>
                 
-                <div className="bg-card p-8 md:p-12">
+                <div className="bg-card p-8 md:p-12 group-hover:bg-secondary/30 transition-colors">
                   <div className="space-y-4">
                     {feature.capabilities.map((cap, i) => (
-                      <div key={i} className="flex items-start gap-4 group">
+                      <div key={i} className="flex items-start gap-4 group/item">
                         <span className="text-primary font-mono text-sm">0{i + 1}</span>
-                        <span className="text-foreground font-mono text-sm group-hover:text-primary transition-colors">{cap}</span>
+                        <span className="text-foreground font-mono text-sm group-hover/item:text-primary transition-colors">{cap}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -191,7 +202,6 @@ const Features = () => {
                 </div>
                 <h3 className="font-display font-bold mb-2">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground font-mono">{feature.description}</p>
-                <ArrowUpRight className="w-4 h-4 text-primary mt-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             ))}
           </div>
