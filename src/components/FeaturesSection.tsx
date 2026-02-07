@@ -1,138 +1,118 @@
-import { motion } from "framer-motion";
-import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck } from "lucide-react";
+import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const features = [
   {
     icon: Phone,
+    number: "01",
     title: "Voice & Call Analysis",
-    description: "Detects AI-generated or cloned voices, unnatural pitch patterns, and synthetic speech markers in real-time.",
-    color: "primary",
+    description: "Detects AI-generated voices, unnatural pitch patterns, and synthetic speech markers in real-time.",
   },
   {
     icon: MessageSquare,
+    number: "02",
     title: "Message Verification",
-    description: "Analyzes linguistic patterns to detect AI-written text vs human typing, flagging impersonation attempts.",
-    color: "primary",
+    description: "Analyzes linguistic patterns to detect AI-written text, flagging impersonation attempts.",
   },
   {
     icon: Video,
+    number: "03",
     title: "Video & Media Integrity",
-    description: "Detects deepfakes, face swaps, lip-sync manipulation, and AI-generated imagery with frame analysis.",
-    color: "primary",
+    description: "Detects deepfakes, face swaps, and AI-generated imagery with frame-by-frame analysis.",
   },
   {
     icon: Brain,
+    number: "04",
     title: "Contextual Reality Check",
-    description: "Cross-checks behavior against known human patterns using device sensors for plausibility.",
-    color: "primary",
+    description: "Cross-checks behavior against known human patterns using device sensors.",
   },
 ];
 
 const benefits = [
-  {
-    icon: Wifi,
-    title: "No Internet Required",
-    description: "Works during outages, disasters, or low connectivity situations.",
-  },
-  {
-    icon: Lock,
-    title: "Total Privacy",
-    description: "No audio, video, or messages ever leave your device.",
-  },
-  {
-    icon: Zap,
-    title: "Instant Results",
-    description: "No cloud latency or server dependency for fast verification.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Tamper-Resistant",
-    description: "Harder to spoof than cloud APIs with local processing.",
-  },
+  { icon: Wifi, title: "No Internet", description: "Works offline, always" },
+  { icon: Lock, title: "Total Privacy", description: "Data never leaves device" },
+  { icon: Zap, title: "Instant", description: "Zero latency results" },
+  { icon: ShieldCheck, title: "Tamper-Proof", description: "Secure local processing" },
 ];
 
 const FeaturesSection = () => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid opacity-20" />
+    <section className="py-24 md:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-geometric opacity-20" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            How It <span className="text-gradient">Works</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Advanced AI models analyze multiple authenticity signals locally, 
-            answering one powerful question: Is this real?
-          </p>
-        </motion.div>
+        <div className="mb-20">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="w-16 h-px bg-primary" />
+            <span className="text-xs font-mono uppercase tracking-widest text-primary">How It Works</span>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 items-end">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.95]">
+              ADVANCED AI
+              <br />
+              <span className="text-gradient">ANALYSIS</span>
+            </h2>
+            <p className="text-muted-foreground font-mono text-sm leading-relaxed max-w-md">
+              Multiple authenticity signals analyzed locally, 
+              answering one powerful question: Is this real?
+            </p>
+          </div>
+        </div>
 
         {/* Main Features Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mb-20">
+        <div className="grid md:grid-cols-2 gap-px bg-border mb-24">
           {features.map((feature, index) => (
-            <motion.div
+            <div
               key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative p-6 md:p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+              className="group bg-background p-8 md:p-10 hover:bg-card transition-colors relative"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Number */}
+              <span className="absolute top-8 right-8 font-display text-6xl font-bold text-foreground/5">
+                {feature.number}
+              </span>
               
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                {/* Icon */}
+                <div className="w-12 h-12 border-2 border-primary flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                  <feature.icon className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
                 
-                <h3 className="font-display text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="font-display text-xl md:text-2xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground font-mono text-sm leading-relaxed">{feature.description}</p>
+                
+                {/* Arrow on hover */}
+                <ArrowUpRight className="w-5 h-5 text-primary mt-6 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Why On-Device Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h3 className="font-display text-2xl md:text-3xl font-bold mb-4">
-            Why <span className="text-gradient">On-Device AI?</span>
-          </h3>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Your data stays yours. Always.
-          </p>
-        </motion.div>
+        <div className="border-t-2 border-foreground/10 pt-20">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="w-16 h-px bg-primary" />
+            <span className="text-xs font-mono uppercase tracking-widest text-primary">Why On-Device?</span>
+          </div>
 
-        {/* Benefits Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center p-6 rounded-xl bg-secondary/50 border border-border"
-            >
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <benefit.icon className="w-5 h-5 text-primary" />
+          <h3 className="font-display text-2xl md:text-3xl font-bold mb-12">
+            YOUR DATA STAYS <span className="text-gradient">YOURS</span>
+          </h3>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border">
+            {benefits.map((benefit) => (
+              <div
+                key={benefit.title}
+                className="bg-background p-6 text-center hover:bg-card transition-colors group"
+              >
+                <div className="w-10 h-10 border-2 border-foreground/20 flex items-center justify-center mx-auto mb-4 group-hover:border-primary transition-colors">
+                  <benefit.icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <h4 className="font-display font-bold text-sm mb-1">{benefit.title}</h4>
+                <p className="text-xs text-muted-foreground font-mono">{benefit.description}</p>
               </div>
-              <h4 className="font-display font-semibold mb-2">{benefit.title}</h4>
-              <p className="text-sm text-muted-foreground">{benefit.description}</p>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

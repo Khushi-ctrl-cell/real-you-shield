@@ -1,62 +1,113 @@
-import { Shield } from "lucide-react";
+import { Shield, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const footerLinks = {
+  product: [
+    { label: "Features", href: "/features" },
+    { label: "How It Works", href: "/how-it-works" },
+    { label: "Demo", href: "/demo" },
+    { label: "Pricing", href: "#" },
+  ],
+  company: [
+    { label: "About", href: "#" },
+    { label: "Blog", href: "#" },
+    { label: "Careers", href: "#" },
+    { label: "Contact", href: "#" },
+  ],
+  legal: [
+    { label: "Privacy", href: "#" },
+    { label: "Terms", href: "#" },
+    { label: "Security", href: "#" },
+  ],
+};
 
 const Footer = () => {
   return (
-    <footer className="py-12 border-t border-border bg-card">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
+    <footer className="border-t-2 border-foreground/10 bg-card">
+      {/* Main Footer */}
+      <div className="container mx-auto px-4 md:px-6 py-16">
+        <div className="grid md:grid-cols-12 gap-12">
           {/* Brand */}
-          <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <Shield className="w-6 h-6 text-primary" />
-              <span className="font-display font-bold text-foreground">
-                Reality<span className="text-primary">Check</span>
+          <div className="md:col-span-4">
+            <Link to="/" className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 border-2 border-primary flex items-center justify-center">
+                <Shield className="w-4 h-4 text-primary" />
+              </div>
+              <span className="font-display font-bold text-lg tracking-tight">
+                REALITY<span className="text-primary">CHECK</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Protecting digital truth through on-device AI verification.
+            <p className="text-sm font-mono text-muted-foreground leading-relaxed max-w-xs">
+              Protecting digital truth through on-device AI verification. Your data stays yours.
             </p>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="font-display font-semibold mb-4">Product</h4>
-            <ul className="space-y-2">
-              <li><Link to="/features" className="text-sm text-muted-foreground hover:text-primary transition-colors">Features</Link></li>
-              <li><Link to="/how-it-works" className="text-sm text-muted-foreground hover:text-primary transition-colors">How It Works</Link></li>
-              <li><Link to="/demo" className="text-sm text-muted-foreground hover:text-primary transition-colors">Demo</Link></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Pricing</a></li>
-            </ul>
-          </div>
+          {/* Links */}
+          <div className="md:col-span-8 grid grid-cols-3 gap-8">
+            {/* Product */}
+            <div>
+              <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Product</h4>
+              <ul className="space-y-3">
+                {footerLinks.product.map((link) => (
+                  <li key={link.label}>
+                    <Link 
+                      to={link.href} 
+                      className="text-sm font-mono text-foreground/70 hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="font-display font-semibold mb-4">Company</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">About</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Blog</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Careers</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
+            {/* Company */}
+            <div>
+              <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Company</h4>
+              <ul className="space-y-3">
+                {footerLinks.company.map((link) => (
+                  <li key={link.label}>
+                    <a 
+                      href={link.href} 
+                      className="text-sm font-mono text-foreground/70 hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Legal */}
-          <div>
-            <h4 className="font-display font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Security</a></li>
-            </ul>
+            {/* Legal */}
+            <div>
+              <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Legal</h4>
+              <ul className="space-y-3">
+                {footerLinks.legal.map((link) => (
+                  <li key={link.label}>
+                    <a 
+                      href={link.href} 
+                      className="text-sm font-mono text-foreground/70 hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
+      {/* Bottom Bar */}
+      <div className="border-t-2 border-foreground/10">
+        <div className="container mx-auto px-4 md:px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs font-mono text-muted-foreground">
             © 2024 Reality Integrity Checker. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs font-mono text-muted-foreground">
             Your data stays yours. Always.
           </p>
         </div>
