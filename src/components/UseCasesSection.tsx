@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { User, Newspaper, GraduationCap, Building2, Scale, ArrowUpRight } from "lucide-react";
 
 const useCases = [
@@ -5,26 +6,31 @@ const useCases = [
     icon: User,
     title: "Personal Safety",
     description: "Scam call & impersonation protection for you and loved ones.",
+    slug: "personal-safety",
   },
   {
     icon: Newspaper,
     title: "Journalism",
     description: "Verify videos and audio before publishing to maintain credibility.",
+    slug: "journalism",
   },
   {
     icon: GraduationCap,
     title: "Education",
     description: "Detect AI impersonation in exams and online classes.",
+    slug: "education",
   },
   {
     icon: Building2,
     title: "Enterprise",
     description: "Prevent CEO fraud, voice phishing, and corporate attacks.",
+    slug: "enterprise",
   },
   {
     icon: Scale,
     title: "Law & Security",
     description: "Field verification without network dependency.",
+    slug: "law-security",
   },
 ];
 
@@ -49,9 +55,10 @@ const UseCasesSection = () => {
         {/* Use Cases Grid - Asymmetric */}
         <div className="grid md:grid-cols-3 gap-px bg-border">
           {useCases.map((useCase, index) => (
-            <div
+            <Link
               key={useCase.title}
-              className={`group bg-background p-8 hover:bg-card transition-colors relative ${
+              to={`/use-cases/${useCase.slug}`}
+              className={`group bg-background p-8 hover:bg-card transition-colors relative cursor-pointer ${
                 index === 0 ? 'md:col-span-2 md:row-span-2' : ''
               }`}
             >
@@ -74,9 +81,12 @@ const UseCasesSection = () => {
                   {useCase.description}
                 </p>
                 
-                <ArrowUpRight className={`${index === 0 ? 'w-6 h-6' : 'w-5 h-5'} text-primary mt-6 opacity-0 group-hover:opacity-100 transition-opacity`} />
+                <div className="flex items-center gap-2 mt-6 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-xs font-mono uppercase tracking-wider">Learn More</span>
+                  <ArrowUpRight className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

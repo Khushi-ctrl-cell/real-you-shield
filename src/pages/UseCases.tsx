@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { User, Newspaper, GraduationCap, Building2, Scale, Phone, Mail, Video, Shield, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +10,7 @@ const useCases = [
     number: "01",
     title: "PERSONAL SAFETY",
     subtitle: "Protect Yourself & Loved Ones",
+    slug: "personal-safety",
     description: "Scammers are using AI to clone voices of family members, creating convincing emergency calls. Reality Check instantly detects synthetic voices, preventing financial and emotional manipulation.",
     scenarios: [
       { icon: Phone, title: "Grandparent Scam Protection", detail: "Detects AI clones pretending to be grandchildren in distress" },
@@ -21,6 +23,7 @@ const useCases = [
     number: "02",
     title: "JOURNALISM",
     subtitle: "Maintain Credibility",
+    slug: "journalism",
     description: "In an age of synthetic media, newsrooms need reliable tools to verify content authenticity before publication.",
     scenarios: [
       { icon: Video, title: "Source Verification", detail: "Verify video evidence before publishing breaking news" },
@@ -33,6 +36,7 @@ const useCases = [
     number: "03",
     title: "EDUCATION",
     subtitle: "Academic Integrity",
+    slug: "education",
     description: "As AI tools become more sophisticated, maintaining academic integrity becomes challenging.",
     scenarios: [
       { icon: Video, title: "Online Exam Proctoring", detail: "Verify student identity during remote examinations" },
@@ -45,6 +49,7 @@ const useCases = [
     number: "04",
     title: "ENTERPRISE",
     subtitle: "Protect Your Business",
+    slug: "enterprise",
     description: "CEO fraud and voice phishing cost businesses billions annually. Reality Check provides enterprise-grade protection.",
     scenarios: [
       { icon: Phone, title: "CEO Fraud Prevention", detail: "Block fake executive calls requesting wire transfers" },
@@ -57,6 +62,7 @@ const useCases = [
     number: "05",
     title: "LAW & SECURITY",
     subtitle: "Field-Ready Verification",
+    slug: "law-security",
     description: "Legal and security professionals need verification tools that work without network dependency.",
     scenarios: [
       { icon: Video, title: "Evidence Verification", detail: "Authenticate video and audio evidence in the field" },
@@ -105,20 +111,18 @@ const UseCases = () => {
             {useCases.map((useCase, index) => (
               <div
                 key={useCase.title}
-                className={`grid lg:grid-cols-2 gap-12 items-start ${
-                  index % 2 === 1 ? "" : ""
-                }`}
+                className={`grid lg:grid-cols-2 gap-12 items-start`}
               >
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="sticky top-32">
+                  <Link to={`/use-cases/${useCase.slug}`} className="block sticky top-32 group">
                     {/* Number */}
                     <span className="font-display text-8xl font-bold text-foreground/[0.05] block mb-4">
                       {useCase.number}
                     </span>
                     
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 border-2 border-primary flex items-center justify-center">
-                        <useCase.icon className="w-6 h-6 text-primary" />
+                      <div className="w-14 h-14 border-2 border-primary flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <useCase.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
                       </div>
                       <div>
                         <h2 className="font-display text-2xl md:text-3xl font-bold">{useCase.title}</h2>
@@ -129,14 +133,20 @@ const UseCases = () => {
                     <p className="text-muted-foreground font-mono leading-relaxed">
                       {useCase.description}
                     </p>
-                  </div>
+                    
+                    <div className="flex items-center gap-2 mt-6 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs font-mono uppercase tracking-wider">View Full Details</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </div>
+                  </Link>
                 </div>
 
                 <div className={`space-y-px bg-border ${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                  {useCase.scenarios.map((scenario, i) => (
-                    <div
+                  {useCase.scenarios.map((scenario) => (
+                    <Link
                       key={scenario.title}
-                      className="bg-background p-6 group hover:bg-card transition-colors"
+                      to={`/use-cases/${useCase.slug}`}
+                      className="bg-background p-6 group hover:bg-card transition-colors block"
                     >
                       <div className="flex items-start gap-4">
                         <div className="w-10 h-10 border-2 border-foreground/20 flex items-center justify-center flex-shrink-0 group-hover:border-primary transition-colors">
@@ -148,7 +158,7 @@ const UseCases = () => {
                         </div>
                         <ArrowUpRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
