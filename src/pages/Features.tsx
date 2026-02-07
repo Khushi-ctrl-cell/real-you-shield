@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck, Fingerprint, Eye, Ear, FileSearch } from "lucide-react";
+import { Phone, MessageSquare, Video, Brain, Wifi, Lock, Zap, ShieldCheck, Fingerprint, Eye, Ear, FileSearch, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
@@ -7,6 +6,7 @@ import CTASection from "@/components/CTASection";
 const detailedFeatures = [
   {
     icon: Phone,
+    number: "01",
     title: "Voice & Call Analysis",
     description: "Advanced voice verification that runs entirely on your device",
     capabilities: [
@@ -18,6 +18,7 @@ const detailedFeatures = [
   },
   {
     icon: MessageSquare,
+    number: "02",
     title: "Message Verification",
     description: "Distinguish between human and AI-written content instantly",
     capabilities: [
@@ -29,6 +30,7 @@ const detailedFeatures = [
   },
   {
     icon: Video,
+    number: "03",
     title: "Video & Media Integrity",
     description: "Comprehensive deepfake and manipulation detection",
     capabilities: [
@@ -40,6 +42,7 @@ const detailedFeatures = [
   },
   {
     icon: Brain,
+    number: "04",
     title: "Contextual Reality Check",
     description: "Multi-signal analysis for complete verification",
     capabilities: [
@@ -52,49 +55,17 @@ const detailedFeatures = [
 ];
 
 const privacyFeatures = [
-  {
-    icon: Wifi,
-    title: "No Internet Required",
-    description: "Works during outages, disasters, or low connectivity. Your protection never depends on a connection.",
-  },
-  {
-    icon: Lock,
-    title: "Total Privacy",
-    description: "No audio, video, or messages ever leave your device. Zero data collection, zero tracking.",
-  },
-  {
-    icon: Zap,
-    title: "Instant Results",
-    description: "No cloud latency or server dependency. Get answers in milliseconds, not seconds.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Tamper-Resistant",
-    description: "Harder to spoof than cloud APIs. Local processing means attackers can't intercept your data.",
-  },
+  { icon: Wifi, title: "No Internet Required", description: "Works during outages, disasters, or low connectivity. Protection never depends on a connection." },
+  { icon: Lock, title: "Total Privacy", description: "No audio, video, or messages ever leave your device. Zero data collection, zero tracking." },
+  { icon: Zap, title: "Instant Results", description: "No cloud latency or server dependency. Get answers in milliseconds, not seconds." },
+  { icon: ShieldCheck, title: "Tamper-Resistant", description: "Harder to spoof than cloud APIs. Local processing means attackers can't intercept." },
 ];
 
 const technologyFeatures = [
-  {
-    icon: Fingerprint,
-    title: "Biometric Analysis",
-    description: "Voice fingerprinting and behavioral biometrics for identity verification.",
-  },
-  {
-    icon: Eye,
-    title: "Computer Vision",
-    description: "Advanced frame-by-frame analysis for detecting visual manipulation.",
-  },
-  {
-    icon: Ear,
-    title: "Audio Intelligence",
-    description: "Spectral analysis to detect synthetic audio patterns invisible to humans.",
-  },
-  {
-    icon: FileSearch,
-    title: "Content Forensics",
-    description: "Deep content analysis for metadata inconsistencies and generation artifacts.",
-  },
+  { icon: Fingerprint, title: "Biometric Analysis", description: "Voice fingerprinting and behavioral biometrics" },
+  { icon: Eye, title: "Computer Vision", description: "Frame-by-frame visual manipulation detection" },
+  { icon: Ear, title: "Audio Intelligence", description: "Spectral analysis for synthetic audio patterns" },
+  { icon: FileSearch, title: "Content Forensics", description: "Metadata and generation artifact analysis" },
 ];
 
 const Features = () => {
@@ -104,132 +75,124 @@ const Features = () => {
       
       {/* Hero */}
       <section className="pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-geometric opacity-30" />
+        <div className="absolute -right-20 top-0 font-display text-[20vw] font-bold text-foreground/[0.02] select-none pointer-events-none leading-none">
+          FEAT
+        </div>
         
-        <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              Powerful <span className="text-gradient">Features</span>
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-16 h-px bg-primary" />
+              <span className="text-xs font-mono uppercase tracking-widest text-primary">Capabilities</span>
+            </div>
+            
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.9] mb-6 reveal">
+              POWERFUL
+              <br />
+              <span className="text-gradient">FEATURES</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground font-mono leading-relaxed max-w-xl reveal stagger-1">
               Comprehensive AI detection that works entirely on your device, 
               protecting your privacy while keeping you safe.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Detailed Features */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="space-y-12">
+          <div className="space-y-px bg-border">
             {detailedFeatures.map((feature, index) => (
-              <motion.div
+              <div
                 key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="grid md:grid-cols-2 gap-8 items-center p-6 md:p-8 rounded-3xl bg-card border border-border"
+                className="grid md:grid-cols-2 gap-px bg-border"
               >
-                <div>
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                    <feature.icon className="w-7 h-7 text-primary" />
+                <div className="bg-background p-8 md:p-12 relative">
+                  <span className="absolute top-8 right-8 font-display text-8xl font-bold text-foreground/[0.03]">
+                    {feature.number}
+                  </span>
+                  
+                  <div className="relative">
+                    <div className="w-14 h-14 border-2 border-primary flex items-center justify-center mb-6">
+                      <feature.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">{feature.title}</h3>
+                    <p className="text-muted-foreground font-mono">{feature.description}</p>
                   </div>
-                  <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">{feature.title}</h3>
-                  <p className="text-muted-foreground text-lg">{feature.description}</p>
                 </div>
                 
-                <div className="space-y-3">
-                  {feature.capabilities.map((cap, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-secondary/50">
-                      <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span className="text-foreground">{cap}</span>
-                    </div>
-                  ))}
+                <div className="bg-card p-8 md:p-12">
+                  <div className="space-y-4">
+                    {feature.capabilities.map((cap, i) => (
+                      <div key={i} className="flex items-start gap-4 group">
+                        <span className="text-primary font-mono text-sm">0{i + 1}</span>
+                        <span className="text-foreground font-mono text-sm group-hover:text-primary transition-colors">{cap}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Privacy First */}
-      <section className="py-20 bg-card">
+      <section className="py-24 bg-card">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-              Privacy <span className="text-gradient">First</span>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-4 mb-6">
+              <span className="w-16 h-px bg-primary" />
+              <span className="text-xs font-mono uppercase tracking-widest text-primary">Privacy First</span>
+              <span className="w-16 h-px bg-primary" />
+            </div>
+            
+            <h2 className="font-display text-4xl md:text-5xl font-bold">
+              YOUR DATA STAYS <span className="text-gradient">YOURS</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Your data stays on your device. Always.
-            </p>
-          </motion.div>
+          </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {privacyFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="p-6 rounded-2xl bg-background border border-border text-center"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-6 h-6 text-primary" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border max-w-5xl mx-auto">
+            {privacyFeatures.map((feature) => (
+              <div key={feature.title} className="bg-background p-8 group hover:bg-secondary/30 transition-colors">
+                <div className="w-12 h-12 border-2 border-foreground/20 flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+                  <feature.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
-                <h3 className="font-display font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </motion.div>
+                <h3 className="font-display font-bold text-lg mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground font-mono">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Technology */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-              Advanced <span className="text-gradient">Technology</span>
+          <div className="mb-16">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="w-16 h-px bg-primary" />
+              <span className="text-xs font-mono uppercase tracking-widest text-primary">Technology</span>
+            </div>
+            
+            <h2 className="font-display text-4xl md:text-5xl font-bold">
+              ADVANCED <span className="text-gradient">AI</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              State-of-the-art AI models optimized for on-device performance
-            </p>
-          </motion.div>
+          </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
             {technologyFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-colors"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <feature.icon className="w-6 h-6 text-primary" />
+              <div key={feature.title} className="bg-background p-8 group hover:bg-card transition-colors relative">
+                <span className="absolute top-4 right-4 text-xs font-mono text-muted-foreground">0{index + 1}</span>
+                <div className="w-12 h-12 border-2 border-foreground/20 flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+                  <feature.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
-                <h3 className="font-display font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </motion.div>
+                <h3 className="font-display font-bold mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground font-mono">{feature.description}</p>
+                <ArrowUpRight className="w-4 h-4 text-primary mt-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
             ))}
           </div>
         </div>

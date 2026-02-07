@@ -11,12 +11,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <HeroSection />
-      <FeaturesSection />
-      <TrustScoreSection />
-      <UseCasesSection />
-      <MagicMomentSection />
-      <CTASection />
+      <main>
+        <HeroSection />
+        <FeaturesSection />
+        <TrustScoreSection />
+        <UseCasesSection />
+        <MagicMomentSection />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );

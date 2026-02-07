@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Phone, MessageSquare, Video, Shield, CheckCircle, AlertTriangle, XCircle, Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -35,7 +34,7 @@ const demoScenarios: DemoScenario[] = [
     title: "CEO Fraud Detection",
     description: "An urgent message from your 'CEO' requesting a wire transfer",
     icon: MessageSquare,
-    content: "\"Hi, I need you to process an urgent wire transfer of $45,000 to a new vendor. This is confidential - please handle this personally and don't discuss with anyone. I'm in meetings all day so just proceed.\"",
+    content: "\"Hi, I need you to process an urgent wire transfer of $45,000 to a new vendor. This is confidential - please handle this personally and don't discuss with anyone.\"",
     result: "suspicious",
     confidence: 78,
     reason: "Linguistic patterns indicate AI generation. Unusual urgency markers and confidentiality requests match known fraud patterns.",
@@ -55,26 +54,23 @@ const demoScenarios: DemoScenario[] = [
 const resultConfigs = {
   verified: {
     icon: CheckCircle,
-    label: "Verified Human",
-    color: "success",
-    bgClass: "bg-success/10",
-    borderClass: "border-success/30",
+    label: "VERIFIED",
+    sublabel: "Human",
+    borderClass: "border-success",
     textClass: "text-success",
   },
   suspicious: {
     icon: AlertTriangle,
-    label: "Suspicious",
-    color: "warning",
-    bgClass: "bg-warning/10",
-    borderClass: "border-warning/30",
+    label: "SUSPICIOUS",
+    sublabel: "Possibly AI",
+    borderClass: "border-warning",
     textClass: "text-warning",
   },
   detected: {
     icon: XCircle,
-    label: "AI Detected",
-    color: "destructive",
-    bgClass: "bg-destructive/10",
-    borderClass: "border-destructive/30",
+    label: "DETECTED",
+    sublabel: "AI Generated",
+    borderClass: "border-destructive",
     textClass: "text-destructive",
   },
 };
@@ -108,32 +104,37 @@ const Demo = () => {
       
       {/* Hero */}
       <section className="pt-32 pb-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-geometric opacity-30" />
+        <div className="absolute -right-20 top-0 font-display text-[20vw] font-bold text-foreground/[0.02] select-none pointer-events-none leading-none">
+          DEMO
+        </div>
         
-        <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              Interactive <span className="text-gradient">Demo</span>
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-16 h-px bg-primary" />
+              <span className="text-xs font-mono uppercase tracking-widest text-primary">Interactive</span>
+            </div>
+            
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.9] mb-6 reveal">
+              LIVE
+              <br />
+              <span className="text-gradient">DEMO</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground font-mono leading-relaxed max-w-xl reveal stagger-1">
               Experience Reality Check in action. Select a scenario and watch 
               as our AI analyzes content for authenticity.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Demo Section */}
-      <section className="py-12 pb-20">
+      <section className="py-12 pb-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             {/* Scenario Selector */}
-            <div className="flex flex-wrap gap-4 justify-center mb-12">
+            <div className="flex flex-wrap gap-2 justify-center mb-12">
               {demoScenarios.map((scenario, index) => (
                 <button
                   key={scenario.type}
@@ -141,145 +142,126 @@ const Demo = () => {
                     setSelectedDemo(index);
                     resetDemo();
                   }}
-                  className={`flex items-center gap-3 px-5 py-3 rounded-xl border transition-all ${
+                  className={`flex items-center gap-3 px-5 py-3 border-2 transition-all font-mono text-xs uppercase tracking-wider ${
                     selectedDemo === index
-                      ? "bg-primary/10 border-primary/50 text-primary"
-                      : "bg-card border-border text-muted-foreground hover:border-primary/30"
+                      ? "border-primary text-primary bg-primary/5"
+                      : "border-foreground/20 text-muted-foreground hover:border-foreground/40"
                   }`}
                 >
-                  <scenario.icon className="w-5 h-5" />
-                  <span className="font-medium">{scenario.title}</span>
+                  <scenario.icon className="w-4 h-4" />
+                  {scenario.title}
                 </button>
               ))}
             </div>
 
             {/* Demo Card */}
-            <motion.div
-              key={selectedDemo}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="p-6 md:p-8 rounded-3xl bg-card border border-border"
-            >
+            <div className="border-2 border-foreground/10 bg-card">
               {/* Scenario Header */}
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <currentScenario.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-bold">{currentScenario.title}</h3>
-                  <p className="text-muted-foreground">{currentScenario.description}</p>
+              <div className="p-8 border-b-2 border-foreground/10">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-12 h-12 border-2 border-primary flex items-center justify-center flex-shrink-0">
+                    <currentScenario.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-bold">{currentScenario.title}</h3>
+                    <p className="text-sm font-mono text-muted-foreground">{currentScenario.description}</p>
+                  </div>
                 </div>
               </div>
 
               {/* Content Preview */}
-              <div className="p-6 rounded-2xl bg-secondary/50 border border-border mb-6">
-                <p className="text-foreground italic">{currentScenario.content}</p>
+              <div className="p-8 bg-background border-b-2 border-foreground/10">
+                <p className="font-mono text-foreground leading-relaxed">{currentScenario.content}</p>
               </div>
 
               {/* Analysis Section */}
-              <div className="relative min-h-[200px]">
-                <AnimatePresence mode="wait">
-                  {!isAnalyzing && !showResult && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex flex-col items-center justify-center py-8"
+              <div className="p-8 min-h-[250px]">
+                {!isAnalyzing && !showResult && (
+                  <div className="flex flex-col items-center justify-center py-8 animate-fade-in">
+                    <Button
+                      size="lg"
+                      onClick={runAnalysis}
+                      className="font-mono uppercase text-xs tracking-wider h-14 px-10 border-2 border-primary bg-primary text-primary-foreground hover:bg-transparent hover:text-primary transition-all hover-brutal"
                     >
-                      <Button
-                        size="lg"
-                        onClick={runAnalysis}
-                        className="glow-primary h-14 px-8 text-base"
+                      <Play className="w-4 h-4 mr-3" />
+                      Analyze Content
+                    </Button>
+                    <p className="text-xs font-mono text-muted-foreground mt-4">
+                      Click to run authenticity analysis
+                    </p>
+                  </div>
+                )}
+
+                {isAnalyzing && (
+                  <div className="flex flex-col items-center justify-center py-8 animate-fade-in">
+                    <div className="relative w-24 h-24 mb-6">
+                      {/* Outer spinning square */}
+                      <div className="absolute inset-0 border-2 border-primary/30 animate-[spin_3s_linear_infinite]" />
+                      {/* Inner spinning square (reversed) */}
+                      <div className="absolute inset-3 border-2 border-primary/50 animate-[spin_2s_linear_infinite_reverse]" />
+                      {/* Center icon */}
+                      <div className="absolute inset-6 flex items-center justify-center">
+                        <Shield className="w-8 h-8 text-primary" />
+                      </div>
+                    </div>
+                    <p className="font-display font-bold">ANALYZING...</p>
+                    <p className="text-xs font-mono text-muted-foreground mt-1">Running on-device AI analysis</p>
+                  </div>
+                )}
+
+                {showResult && resultConfig && (
+                  <div className="animate-fade-in">
+                    <div className={`p-6 border-l-4 ${resultConfig.borderClass} bg-background`}>
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className={`w-14 h-14 border-2 ${resultConfig.borderClass} flex items-center justify-center`}>
+                          <resultConfig.icon className={`w-7 h-7 ${resultConfig.textClass}`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-1">
+                            <span className={`font-display font-bold text-xl ${resultConfig.textClass}`}>
+                              {resultConfig.label}
+                            </span>
+                            <span className={`text-xs font-mono px-2 py-1 border ${resultConfig.borderClass} ${resultConfig.textClass} uppercase tracking-wider`}>
+                              {currentScenario.confidence}%
+                            </span>
+                          </div>
+                          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+                            {resultConfig.sublabel}
+                          </p>
+                          <p className="text-sm font-mono text-muted-foreground">{currentScenario.reason}</p>
+                        </div>
+                      </div>
+
+                      {/* Action Recommendation */}
+                      <div className="flex items-center gap-4 pt-4 border-t border-foreground/10 mt-4">
+                        <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Recommended:</span>
+                        <span className={`text-xs font-mono ${resultConfig.textClass}`}>
+                          {currentScenario.result === "verified" 
+                            ? "→ Proceed with confidence" 
+                            : currentScenario.result === "suspicious"
+                            ? "→ Verify identity through alternate channel"
+                            : "→ Block and report this contact"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-center mt-8">
+                      <Button 
+                        variant="outline" 
+                        onClick={resetDemo} 
+                        className="font-mono uppercase text-xs tracking-wider border-2 border-foreground/20 hover:border-foreground"
                       >
-                        <Play className="w-5 h-5 mr-2" />
-                        Analyze Content
+                        <RotateCcw className="w-4 h-4 mr-2" />
+                        Reset Demo
                       </Button>
-                      <p className="text-sm text-muted-foreground mt-4">
-                        Click to run authenticity analysis
-                      </p>
-                    </motion.div>
-                  )}
-
-                  {isAnalyzing && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex flex-col items-center justify-center py-8"
-                    >
-                      <div className="relative w-24 h-24 mb-6">
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                          className="absolute inset-0 rounded-full border-2 border-primary/30"
-                        />
-                        <motion.div
-                          animate={{ rotate: -360 }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                          className="absolute inset-2 rounded-full border-2 border-t-primary border-r-transparent border-b-transparent border-l-transparent"
-                        />
-                        <div className="absolute inset-4 rounded-full bg-card flex items-center justify-center">
-                          <Shield className="w-8 h-8 text-primary" />
-                        </div>
-                      </div>
-                      <p className="text-foreground font-medium">Analyzing...</p>
-                      <p className="text-sm text-muted-foreground">Running on-device AI analysis</p>
-                    </motion.div>
-                  )}
-
-                  {showResult && resultConfig && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="py-4"
-                    >
-                      <div className={`p-6 rounded-2xl ${resultConfig.bgClass} border ${resultConfig.borderClass}`}>
-                        <div className="flex items-start gap-4 mb-4">
-                          <div className={`w-12 h-12 rounded-xl ${resultConfig.bgClass} flex items-center justify-center`}>
-                            <resultConfig.icon className={`w-6 h-6 ${resultConfig.textClass}`} />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-1">
-                              <span className={`font-display font-bold text-lg ${resultConfig.textClass}`}>
-                                {resultConfig.label}
-                              </span>
-                              <span className={`text-sm px-2 py-0.5 rounded-full ${resultConfig.bgClass} ${resultConfig.textClass}`}>
-                                {currentScenario.confidence}% confidence
-                              </span>
-                            </div>
-                            <p className="text-muted-foreground">{currentScenario.reason}</p>
-                          </div>
-                        </div>
-
-                        {/* Action Recommendation */}
-                        <div className="flex items-center gap-2 pt-4 border-t border-current/10">
-                          <span className="text-sm font-medium">Recommended Action:</span>
-                          <span className={`text-sm ${resultConfig.textClass}`}>
-                            {currentScenario.result === "verified" 
-                              ? "Proceed with confidence" 
-                              : currentScenario.result === "suspicious"
-                              ? "Verify identity through alternate channel"
-                              : "Block and report this contact"}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-center mt-6">
-                        <Button variant="outline" onClick={resetDemo} className="border-border">
-                          <RotateCcw className="w-4 h-4 mr-2" />
-                          Reset Demo
-                        </Button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </div>
+                  </div>
+                )}
               </div>
-            </motion.div>
+            </div>
 
             {/* Disclaimer */}
-            <p className="text-center text-sm text-muted-foreground mt-8">
+            <p className="text-center text-xs font-mono text-muted-foreground mt-8">
               This is a simulated demo. The actual product performs real-time on-device AI analysis.
             </p>
           </div>

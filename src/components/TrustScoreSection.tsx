@@ -1,108 +1,94 @@
-import { motion } from "framer-motion";
-import { CheckCircle, AlertTriangle, XCircle, Info } from "lucide-react";
+import { CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 
 const trustLevels = [
   {
     icon: CheckCircle,
-    label: "Verified Human",
+    label: "VERIFIED",
+    sublabel: "Human",
     color: "success",
-    bgColor: "bg-success/10",
-    borderColor: "border-success/30",
-    textColor: "text-success",
+    borderClass: "border-success",
+    textClass: "text-success",
     description: "Content appears authentic and human-generated",
   },
   {
     icon: AlertTriangle,
-    label: "Suspicious / Possibly AI",
+    label: "SUSPICIOUS",
+    sublabel: "Possibly AI",
     color: "warning",
-    bgColor: "bg-warning/10",
-    borderColor: "border-warning/30",
-    textColor: "text-warning",
-    description: "Some patterns indicate potential AI generation",
+    borderClass: "border-warning",
+    textClass: "text-warning",
+    description: "Patterns indicate potential AI generation",
   },
   {
     icon: XCircle,
-    label: "AI-Generated or Manipulated",
+    label: "DETECTED",
+    sublabel: "AI Generated",
     color: "destructive",
-    bgColor: "bg-destructive/10",
-    borderColor: "border-destructive/30",
-    textColor: "text-destructive",
-    description: "High confidence of synthetic or manipulated content",
+    borderClass: "border-destructive",
+    textClass: "text-destructive",
+    description: "High confidence of synthetic content",
   },
-];
-
-const scoreDetails = [
-  "Confidence percentage",
-  "Reason summary (e.g., \"Synthetic voice patterns detected\")",
-  "Action suggestions (ignore, verify identity, block)",
 ];
 
 const TrustScoreSection = () => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden bg-card">
-      <div className="absolute inset-0 bg-grid opacity-10" />
+    <section className="py-24 md:py-32 relative overflow-hidden bg-card">
+      <div className="absolute inset-0 bg-diagonal opacity-10" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Trust <span className="text-gradient">Score</span> System
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-4 mb-6">
+            <span className="w-16 h-px bg-primary" />
+            <span className="text-xs font-mono uppercase tracking-widest text-primary">Trust Score</span>
+            <span className="w-16 h-px bg-primary" />
+          </div>
+          
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
+            CLEAR <span className="text-gradient">RESULTS</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Every interaction is labeled with a simple, human-friendly indicator
-          </p>
-        </motion.div>
+        </div>
 
         {/* Trust Level Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {trustLevels.map((level, index) => (
-            <motion.div
+        <div className="grid md:grid-cols-3 gap-px bg-border max-w-5xl mx-auto mb-16">
+          {trustLevels.map((level) => (
+            <div
               key={level.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className={`p-6 rounded-2xl ${level.bgColor} border ${level.borderColor}`}
+              className={`bg-background p-8 text-center border-t-4 ${level.borderClass} hover:bg-secondary/30 transition-colors`}
             >
-              <div className="flex items-center gap-3 mb-4">
-                <level.icon className={`w-8 h-8 ${level.textColor}`} />
-                <h3 className={`font-display font-semibold text-lg ${level.textColor}`}>
-                  {level.label}
-                </h3>
-              </div>
-              <p className="text-muted-foreground">{level.description}</p>
-            </motion.div>
+              <level.icon className={`w-12 h-12 ${level.textClass} mx-auto mb-4`} />
+              <h3 className={`font-display text-2xl font-bold ${level.textClass}`}>
+                {level.label}
+              </h3>
+              <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground mt-1 mb-4">
+                {level.sublabel}
+              </p>
+              <p className="text-sm text-muted-foreground font-mono">{level.description}</p>
+            </div>
           ))}
         </div>
 
         {/* Score Details */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="max-w-2xl mx-auto"
-        >
-          <div className="p-6 rounded-2xl bg-secondary/50 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Info className="w-5 h-5 text-primary" />
-              <h4 className="font-display font-semibold">Each Score Includes</h4>
-            </div>
-            <ul className="space-y-3">
-              {scoreDetails.map((detail, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
-                  <span className="text-muted-foreground">{detail}</span>
-                </li>
+        <div className="max-w-2xl mx-auto">
+          <div className="border-2 border-foreground/10 p-8">
+            <h4 className="font-display font-bold text-lg mb-6 flex items-center gap-3">
+              <span className="w-8 h-px bg-primary" />
+              Each Score Includes
+            </h4>
+            <div className="grid gap-4">
+              {[
+                "Confidence percentage",
+                'Reason summary (e.g., "Synthetic voice patterns detected")',
+                "Action suggestions (ignore, verify identity, block)",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-4 font-mono text-sm">
+                  <span className="text-primary font-bold">0{i + 1}</span>
+                  <span className="text-muted-foreground">{item}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

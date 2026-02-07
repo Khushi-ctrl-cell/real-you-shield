@@ -1,77 +1,82 @@
-import { motion } from "framer-motion";
-import { User, Newspaper, GraduationCap, Building2, Scale } from "lucide-react";
+import { User, Newspaper, GraduationCap, Building2, Scale, ArrowUpRight } from "lucide-react";
 
 const useCases = [
   {
     icon: User,
     title: "Personal Safety",
-    description: "Protect yourself from scam calls and impersonation attempts targeting you or your loved ones.",
+    description: "Scam call & impersonation protection for you and loved ones.",
   },
   {
     icon: Newspaper,
-    title: "Journalism & Media",
-    description: "Verify video and audio authenticity before publishing to maintain credibility.",
+    title: "Journalism",
+    description: "Verify videos and audio before publishing to maintain credibility.",
   },
   {
     icon: GraduationCap,
     title: "Education",
-    description: "Detect AI impersonation in online exams and virtual classrooms.",
+    description: "Detect AI impersonation in exams and online classes.",
   },
   {
     icon: Building2,
     title: "Enterprise",
-    description: "Prevent CEO fraud, voice phishing, and corporate impersonation attacks.",
+    description: "Prevent CEO fraud, voice phishing, and corporate attacks.",
   },
   {
     icon: Scale,
     title: "Law & Security",
-    description: "Field verification of evidence without requiring network connectivity.",
+    description: "Field verification without network dependency.",
   },
 ];
 
 const UseCasesSection = () => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid opacity-20" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+    <section className="py-24 md:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-geometric opacity-20" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Use <span className="text-gradient">Cases</span>
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="w-16 h-px bg-primary" />
+            <span className="text-xs font-mono uppercase tracking-widest text-primary">Applications</span>
+          </div>
+          
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
+            USE <span className="text-gradient">CASES</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Protection across every domain where digital trust matters
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Use Cases Grid - Asymmetric */}
+        <div className="grid md:grid-cols-3 gap-px bg-border">
           {useCases.map((useCase, index) => (
-            <motion.div
+            <div
               key={useCase.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+              className={`group bg-background p-8 hover:bg-card transition-colors relative ${
+                index === 0 ? 'md:col-span-2 md:row-span-2' : ''
+              }`}
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Large index for first item */}
+              {index === 0 && (
+                <span className="absolute top-8 right-8 font-display text-[8rem] font-bold text-foreground/[0.03] leading-none">
+                  01
+                </span>
+              )}
               
-              <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <useCase.icon className="w-6 h-6 text-primary" />
+              <div className={`relative ${index === 0 ? 'max-w-md' : ''}`}>
+                <div className={`${index === 0 ? 'w-16 h-16' : 'w-12 h-12'} border-2 border-foreground/20 flex items-center justify-center mb-6 group-hover:border-primary transition-colors`}>
+                  <useCase.icon className={`${index === 0 ? 'w-7 h-7' : 'w-5 h-5'} text-muted-foreground group-hover:text-primary transition-colors`} />
                 </div>
                 
-                <h3 className="font-display text-xl font-semibold mb-2">{useCase.title}</h3>
-                <p className="text-muted-foreground text-sm">{useCase.description}</p>
+                <h3 className={`font-display font-bold mb-3 ${index === 0 ? 'text-3xl md:text-4xl' : 'text-xl'}`}>
+                  {useCase.title}
+                </h3>
+                <p className={`text-muted-foreground font-mono leading-relaxed ${index === 0 ? 'text-base' : 'text-sm'}`}>
+                  {useCase.description}
+                </p>
+                
+                <ArrowUpRight className={`${index === 0 ? 'w-6 h-6' : 'w-5 h-5'} text-primary mt-6 opacity-0 group-hover:opacity-100 transition-opacity`} />
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
