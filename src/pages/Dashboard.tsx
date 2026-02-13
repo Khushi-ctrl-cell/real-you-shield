@@ -24,19 +24,37 @@ const mockDeviceScores = [
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("threats");
+  const [authLoading, setAuthLoading] = useState(true);
 
+  // UX-only auth guard — prevents flash of unauthorized content.
+  // Actual data security is enforced server-side by RLS policies on every table.
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) navigate("/auth");
+      else setAuthLoading(false);
     };
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) navigate("/auth");
+      else setAuthLoading(false);
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-2 border-primary flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <Shield className="w-5 h-5 text-primary" />
+          </div>
+          <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
