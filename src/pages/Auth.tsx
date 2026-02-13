@@ -87,6 +87,8 @@ const Auth = () => {
                     placeholder="John Doe"
                     className="pl-10 h-12 border-2 border-foreground/20 bg-background font-mono"
                     required
+                    minLength={2}
+                    maxLength={100}
                   />
                 </div>
               </div>
