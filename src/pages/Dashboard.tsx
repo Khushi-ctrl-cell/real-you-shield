@@ -1,30 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Shield, Phone, AlertTriangle, CheckCircle, XCircle, Activity, BarChart3, FileText, Users, Settings, LogOut, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { formatDistanceToNow } from "date-fns";
 
-const mockThreatFeed = [
-  { id: 1, time: "2m ago", type: "Voice Clone", risk: 94.2, device: "FT-CEO-01", status: "blocked" },
-  { id: 2, time: "8m ago", type: "Text Impersonation", risk: 78.5, device: "FT-CFO-02", status: "flagged" },
-  { id: 3, time: "15m ago", type: "Voice Call", risk: 12.1, device: "FT-SALES-05", status: "verified" },
-  { id: 4, time: "1h ago", type: "Voice Clone", risk: 89.3, device: "FT-CEO-01", status: "blocked" },
-  { id: 5, time: "2h ago", type: "Voice Call", risk: 5.4, device: "FT-HR-03", status: "verified" },
-  { id: 6, time: "3h ago", type: "Text Analysis", risk: 67.2, device: "FT-LEGAL-01", status: "flagged" },
-];
+interface ThreatRow {
+  id: string;
+  timestamp: string;
+  analysis_type: string;
+  risk_score: number;
+  result: string;
+  confidence: number | null;
+  reason: string | null;
+  device_identifier: string;
+}
 
-const mockDeviceScores = [
-  { name: "FT-CEO-01", score: 42, alerts: 12, status: "high-risk" },
-  { name: "FT-CFO-02", score: 71, alerts: 5, status: "moderate" },
-  { name: "FT-SALES-05", score: 94, alerts: 1, status: "healthy" },
-  { name: "FT-HR-03", score: 97, alerts: 0, status: "healthy" },
-  { name: "FT-LEGAL-01", score: 68, alerts: 7, status: "moderate" },
-];
+function mapResultToStatus(result: string) {
+  if (result === "blocked") return "blocked";
+  if (result === "suspicious" || result === "ai_detected") return "flagged";
+  return "verified";
+}
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("threats");
   const [authLoading, setAuthLoading] = useState(true);
+  const [threats, setThreats] = useState<ThreatRow[]>([]);
+  const [threatsLoading, setThreatsLoading] = useState(true);
+
+  const fetchThreats = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("verification_logs")
+      .select("id, timestamp, analysis_type, risk_score, result, confidence, reason, device_id, devices(device_identifier)")
+      .order("timestamp", { ascending: false })
+      .limit(50);
+
+    if (!error && data) {
+      setThreats(
+        data.map((row: any) => ({
+          id: row.id,
+          timestamp: row.timestamp,
+          analysis_type: row.analysis_type,
+          risk_score: Number(row.risk_score),
+          result: row.result,
+          confidence: row.confidence,
+          reason: row.reason,
+          device_identifier: row.devices?.device_identifier ?? row.device_id,
+        }))
+      );
+    }
+    setThreatsLoading(false);
+  }, []);
 
   // UX-only auth guard — prevents flash of unauthorized content.
   // Actual data security is enforced server-side by RLS policies on every table.
@@ -42,6 +69,22 @@ const Dashboard = () => {
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Fetch live threats + subscribe to realtime
+  useEffect(() => {
+    fetchThreats();
+
+    const channel = supabase
+      .channel("verification_logs_realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "verification_logs" },
+        () => fetchThreats()
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchThreats]);
 
   if (authLoading) {
     return (
@@ -136,61 +179,49 @@ const Dashboard = () => {
               <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground w-32">Device</span>
               <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground w-24">Status</span>
             </div>
-            {mockThreatFeed.map((threat) => (
-              <div key={threat.id} className="bg-background p-4 flex items-center gap-4 hover:bg-card transition-colors">
-                <span className="text-xs font-mono text-muted-foreground w-20">{threat.time}</span>
-                <span className="text-sm font-mono text-foreground flex-1">{threat.type}</span>
-                <span className={`text-sm font-mono font-bold w-20 ${
-                  threat.risk > 80 ? "text-destructive" : threat.risk > 50 ? "text-warning" : "text-success"
-                }`}>
-                  {threat.risk}%
-                </span>
-                <span className="text-xs font-mono text-muted-foreground w-32">{threat.device}</span>
-                <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-1 border w-24 text-center ${
-                  threat.status === "blocked" ? "border-destructive text-destructive" :
-                  threat.status === "flagged" ? "border-warning text-warning" :
-                  "border-success text-success"
-                }`}>
-                  {threat.status}
-                </span>
+            {threatsLoading ? (
+              <div className="bg-background p-8 text-center">
+                <p className="text-xs font-mono text-muted-foreground">Loading threats…</p>
               </div>
-            ))}
+            ) : threats.length === 0 ? (
+              <div className="bg-background p-8 text-center">
+                <p className="text-xs font-mono text-muted-foreground">No verification logs yet.</p>
+              </div>
+            ) : (
+              threats.map((threat) => {
+                const status = mapResultToStatus(threat.result);
+                return (
+                  <div key={threat.id} className="bg-background p-4 flex items-center gap-4 hover:bg-card transition-colors">
+                    <span className="text-xs font-mono text-muted-foreground w-20">
+                      {formatDistanceToNow(new Date(threat.timestamp), { addSuffix: true })}
+                    </span>
+                    <span className="text-sm font-mono text-foreground flex-1">{threat.analysis_type}</span>
+                    <span className={`text-sm font-mono font-bold w-20 ${
+                      threat.risk_score > 80 ? "text-destructive" : threat.risk_score > 50 ? "text-warning" : "text-success"
+                    }`}>
+                      {threat.risk_score}%
+                    </span>
+                    <span className="text-xs font-mono text-muted-foreground w-32">{threat.device_identifier}</span>
+                    <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-1 border w-24 text-center ${
+                      status === "blocked" ? "border-destructive text-destructive" :
+                      status === "flagged" ? "border-warning text-warning" :
+                      "border-success text-success"
+                    }`}>
+                      {status}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         )}
 
         {/* Devices */}
         {activeTab === "devices" && (
           <div className="space-y-px bg-border">
-            {mockDeviceScores.map((device) => (
-              <div key={device.name} className="bg-background p-6 flex items-center justify-between hover:bg-card transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 border-2 border-foreground/20 flex items-center justify-center">
-                    <Phone className="w-4 h-4 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-mono font-bold">{device.name}</h3>
-                    <p className="text-xs font-mono text-muted-foreground">{device.alerts} alerts this week</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <div className={`font-display text-2xl font-bold ${
-                      device.score > 80 ? "text-success" : device.score > 50 ? "text-warning" : "text-destructive"
-                    }`}>
-                      {device.score}
-                    </div>
-                    <div className="text-xs font-mono text-muted-foreground">Trust Score</div>
-                  </div>
-                  <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-1 border ${
-                    device.status === "healthy" ? "border-success text-success" :
-                    device.status === "moderate" ? "border-warning text-warning" :
-                    "border-destructive text-destructive"
-                  }`}>
-                    {device.status}
-                  </span>
-                </div>
-              </div>
-            ))}
+            <p className="bg-card p-4 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+              Device list — coming soon (live query)
+            </p>
           </div>
         )}
 
